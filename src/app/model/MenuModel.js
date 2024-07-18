@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const menu = new mongoose.Schema(
   {
@@ -23,4 +23,4 @@ const menu = new mongoose.Schema(
 
 const MenuModel = mongoose.model("menus", menu);
 
-module.exports = MenuModel;
+export default MenuModel

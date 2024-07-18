@@ -1,9 +1,12 @@
-const express = require("express");
+import express from "express";
+
+import {
+  getAllMenu,
+  getSingleMenu,
+} from "../app/controllers/MenuController.js";
 const router = express.Router();
 
-const MenuController = require("../app/controllers/MenuController");
+router.get("/", getAllMenu);
+router.get("/:id", getSingleMenu);
 
-router.post("/", MenuController.addMenu);
-router.get("/", MenuController.getMenu);
-
-module.exports = router;
+export default router;

@@ -1,14 +1,31 @@
-const express = require("express");
-const cors = require("cors");
-const database = require("./config/database");
-const menuRoutes = require("./routes/menu");
+import express from "express"
+import cors from 'cors'
+import cookieParser from "cookie-parser";
+import dotenv from 'dotenv'
+import mongoose from "mongoose";
+
+import menuRoutes from './routes/menu.js'
+import tableRoutes from './routes/table.js'
+dotenv.config()
+
 const app = express();
 
-// connect database
-database.connect();
+const port = process.env.PORT || 8000
+
+// connect to database 
+mongoose.set("strictQuery",false)
+const connectDB = async ()=>{
+  try {
+    await mongoose.connect(process.env.MONGO_CONNECTION)
+    console.log("connect to database successful");
+  } catch (error) {
+    console.log("connect to databse failed");
+  }
+}
 
 // middleware
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({origin:true}));
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -18,7 +35,9 @@ app.use(
 
 // routes
 app.use("/api/v1/menu", menuRoutes);
+app.use("/api/v1/reservation", tableRoutes);
 
-app.listen(4000, (req, res) => {
+app.listen(port, (req, res) => {
+  connectDB()
   console.log("connect server successfully");
 });
